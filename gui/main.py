@@ -3,8 +3,8 @@ import sys
 from PyQt4 import QtCore, QtGui
 
 sys.path.append("./daemon")
-sys.path.append("./gmouseui")
-sys.path.append("./gmouseui/uimodules")
+sys.path.append("./brocketui")
+sys.path.append("./brocketui/uimodules")
 
 from mainwindow import MainWindow
 

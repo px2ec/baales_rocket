@@ -2,7 +2,7 @@
 from PyQt4 import QtCore
 import modcom
 import moddev
-import gmousedev
+import brocketdev
 import sys
 
 
@@ -25,7 +25,7 @@ if sys.platform.startswith('win'):
 
 ENABLE_INTR = 48
 
-class gMouseD(QtCore.QThread):
+class bRocketD(QtCore.QThread):
 
 	_gmd = None
 	Available = False
@@ -44,7 +44,7 @@ class gMouseD(QtCore.QThread):
 	m = PyMouse()
 
 	def __init__(self):
-		super(gMouseD, self).__init__()
+		super(bRocketD, self).__init__()
 		pyautogui.FAILSAFE = False 
 		pyautogui.MINIMUM_DURATION = 0.00001
 
@@ -60,7 +60,7 @@ class gMouseD(QtCore.QThread):
 		#print "Device found"
 		#print "Device description: %s" % self._mc._md
 		if self._mc._md == "GLVMOUSE":
-			self._gmd = gmousedev.gMouseDev()
+			self._gmd = brocketdev.bRocketDev()
 			self._gmd._mc = self._mc
 			self.Available = True
 			return

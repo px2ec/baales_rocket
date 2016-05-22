@@ -4,7 +4,7 @@ import modcom
 
 CHECK_STATE = 42
 
-class gMouseDev(moddev.ModDev):
+class bRocketDev(moddev.ModDev):
 	
 	# "Public" variables for class
 	ErrorFlag = False # Error flag for any device error
@@ -21,7 +21,7 @@ class gMouseDev(moddev.ModDev):
 	buttonTgl = 0
 
 	def __init__(self):
-		super(gMouseDev, self).__init__()
+		super(bRocketDev, self).__init__()
 
 	def getState(self):
 		lst = [0xFF, CHECK_STATE, 1, CHECK_STATE]

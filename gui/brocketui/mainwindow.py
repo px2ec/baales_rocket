@@ -6,7 +6,7 @@ sys.path.append("../daemon")
 # From Qt 4 Designer --------------------------------------------------------------------------------------
 import ui_mainwindow
 
-import gmoused
+import brocketd
 
 from PyQt4 import QtCore, QtGui
 
@@ -14,7 +14,7 @@ class MainWindow(QtGui.QMainWindow, ui_mainwindow.Ui_MainWindow):
 	def __init__(self):
 		super(MainWindow, self).__init__()
 		self.setupUi(self)
-		self._gmdc = gmoused.gMouseD()
+		self._gmdc = brocketd.bRocketD()
 		self.pbConnect.clicked.connect(self.pbconnectclicked)
 		self._enabletglstate = False
 		self.pbEnable.clicked.connect(self.pbenableclicked)
