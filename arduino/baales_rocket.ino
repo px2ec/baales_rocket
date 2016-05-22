@@ -226,8 +226,8 @@ void software_Reset() { // Restarts program from beginning but does not reset th
 void printDeviceDescription() {
 	Serial.write(0xFF);
 	Serial.write(CHECK_DEV);
-	Serial.write(8);
-	Serial.write("GLVMOUSE");
+	Serial.write(13);
+	Serial.write("BAALES_ROCKET");
 }
 
 void sendState() {
