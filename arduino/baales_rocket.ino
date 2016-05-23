@@ -31,10 +31,10 @@ int enflag = 0; // enable flag from recieving packet
 // working packet
 packet lepacket;
 
-#include "libButtons.h"
+//#include "libButtons.h"
 
-int buttonPins[3] = {16, 17, 15};     // the number of the pushbutton pin
-libButtons buttons(buttonPins, 3);
+//int buttonPins[3] = {16, 17, 15};     // the number of the pushbutton pin
+//libButtons buttons(buttonPins, 3);
 
 #include <Butter.h>
 
@@ -64,6 +64,7 @@ float gyro_sensitivity, gyro_off_x = 0, gyro_off_y = 0, gyro_off_z = 0;
 float sampleFreq; // half the sample period expressed in seconds
 unsigned long lastUpdate, now;
 
+// Quaternions ----------------------------------------------------------------------------------------------------------------------------------
 void MARGUpdateFilterIMU(float w_x, float w_y, float w_z, float a_x, float a_y, float a_z) {
 	// Local system variables
 	float norm; // vector norm
@@ -178,7 +179,10 @@ void getQ (float * q, float * val) {
 	q[2] = q2;
 	q[3] = q3;
 }
+// ----------------------------------------------------------------------------------------------------------------------------------------------
 
+
+// Yaw, pitch and roll --------------------------------------------------------------------------------------------------------------------------
 void getYawPitchRollRad(float * ypr) {
 	float q[4]; // quaternion
 	float val[11];
@@ -204,7 +208,10 @@ void getYawPitchRoll(float * ypr) {
 	getYawPitchRollRad(ypr);
 	arr3_rad_to_deg(ypr);
 }
+// ----------------------------------------------------------------------------------------------------------------------------------------------
 
+
+// Altitude -------------------------------------------------------------------------------------------------------------------------------------
 double getPressure() {
 	char status;
 	double T,P,p0,a;
@@ -257,7 +264,10 @@ double getPressure() {
 	}
 	else Serial.println("error starting temperature measurement\n");
 }
+// ----------------------------------------------------------------------------------------------------------------------------------------------
 
+
+// Initializarions ------------------------------------------------------------------------------------------------------------------------------
 void init_all() {
 	gyro.init();
 	gyro.enableDefault();
@@ -282,7 +292,10 @@ void init_all() {
 void software_Reset() { // Restarts program from beginning but does not reset the peripherals and registers
 	asm volatile ("  jmp 0");  
 }
+// ----------------------------------------------------------------------------------------------------------------------------------------------
 
+
+// Serial, Bluetooth and PC ---------------------------------------------------------------------------------------------------------------------
 void printDeviceDescription() {
 	Serial.write(0xFF);
 	Serial.write(CHECK_DEV);
@@ -315,7 +328,10 @@ void sendState() {
 	Serial.write(a);
 
 }
+// ----------------------------------------------------------------------------------------------------------------------------------------------
 
+
+// Arduino setup and loop -----------------------------------------------------------------------------------------------------------------------
 void setup() {
 	Wire.begin();        // join i2c bus (address optional for master)
 	// initialize the serial communication:
@@ -351,7 +367,7 @@ void setup() {
 
 void loop() {
 
-	buttons.reportButtons();
+	//buttons.reportButtons();
 	if ((enflag != 1) || !(lepacket.ready)) return;
 
 	packet tmppacket = lepacket;
@@ -409,3 +425,4 @@ void serialEvent() {
 		//Serial.println(input);
 	}
 }
+// ----------------------------------------------------------------------------------------------------------------------------------------------
