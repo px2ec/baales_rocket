@@ -51,6 +51,10 @@ L3G gyro;
 
 SFE_BMP180 pressure;
 double baseline; // baseline pressure
+double lastZ = 0, velZ;
+unsigned long zlU, zn;
+
+#define pPIN	15	// parachute pin
 
 butter10hz0_3 mfilter_accx;
 butter10hz0_3 mfilter_accy;
@@ -263,6 +267,19 @@ double getPressure() {
 	}
 	else Serial.println("error starting temperature measurement\n");
 }
+
+void updateVelocityZ() {
+	zn = micros();
+	double a, P, ztime = 1.0 / ((now - lastUpdate) / 1000000.0);
+	// Get a new pressure reading:
+	P = getPressure();
+	// Show the relative altitude difference between
+	// the new reading and the baseline reading:
+	a = pressure.altitude(P,baseline);
+	velZ = (a - lastZ) / ztime;
+	zlU = zn;
+}
+
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -362,11 +379,15 @@ void setup() {
 	lepacket.intr = 0;
 	lepacket.size = 0;
 	lepacket.gcount = 0;
+
+	pinMode(pPIN, OUTPUT);
 }
 
 void loop() {
 
 	//buttons.reportButtons();
+	updateVelocityZ();
+	if (!valZ) digitalWrite(pPIN, HIGH);
 	if ((enflag != 1) || !(lepacket.ready)) return;
 
 	packet tmppacket = lepacket;
