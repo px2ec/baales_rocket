@@ -43,15 +43,14 @@ packet lepacket;
 #include <L3G.h>
 #include <SFE_BMP180.h>
 
-SFE_BMP180 pressure;
-
-double baseline; // baseline pressure
-
 #define betaDef  2.0f
 #define nsamples 75
 
 ADXL345 acc;
 L3G gyro;
+
+SFE_BMP180 pressure;
+double baseline; // baseline pressure
 
 butter10hz0_3 mfilter_accx;
 butter10hz0_3 mfilter_accy;
