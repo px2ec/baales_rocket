@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>242</width>
-    <height>119</height>
+    <width>433</width>
+    <height>183</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,18 +18,18 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>242</width>
-    <height>119</height>
+    <width>433</width>
+    <height>183</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>242</width>
-    <height>119</height>
+    <width>433</width>
+    <height>183</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>GiveMeFive - Cliente</string>
+   <string>Baales Rocket</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pbConnect">
@@ -78,7 +78,7 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>50</y>
+      <y>40</y>
       <width>101</width>
       <height>41</height>
      </rect>
@@ -90,6 +90,141 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="pbEnableTimer">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>130</y>
+      <width>94</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Temporizador</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblTimerSt">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>80</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Timer Desactivado</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbEnableParachute">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>130</y>
+      <width>94</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Parachute</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblYaw">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>50</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Yaw: </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblPitch">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>80</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pitch: </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblRoll">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>110</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Roll: </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblPressure">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>140</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pressure: </string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>10</y>
+      <width>171</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <widget class="QLabel" name="lblAltitude">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Altitude (relative): </string>
+     </property>
+    </widget>
+   </widget>
+   <zorder>frame</zorder>
+   <zorder>pbConnect</zorder>
+   <zorder>pbEnable</zorder>
+   <zorder>lblStateLabel</zorder>
+   <zorder>lblState</zorder>
+   <zorder>pbEnableTimer</zorder>
+   <zorder>lblTimerSt</zorder>
+   <zorder>pbEnableParachute</zorder>
+   <zorder>lblYaw</zorder>
+   <zorder>lblPitch</zorder>
+   <zorder>lblRoll</zorder>
+   <zorder>lblPressure</zorder>
   </widget>
  </widget>
  <resources/>

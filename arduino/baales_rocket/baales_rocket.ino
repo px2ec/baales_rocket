@@ -3,6 +3,10 @@
 #include <FIMU_ADXL345.h>
 #include <FIMU_ITG3200.h>
 #include <HMC5883L.h>
+// Servo library
+#include <Servo.h> 
+#define SERVO_PIN		9
+Servo myservo;
 
 #define BMP085_ADDRESS 0x77  // I2C address of BMP085
 
@@ -27,8 +31,12 @@ long b5;
 
 short temperature;
 long pressure;
+long pressure_offset;
+float maxaltitude = 0;
 
- 
+long lastmillisec;
+long mstimer;
+
 float angles[3]; // yaw pitch roll
 float heading;
  
@@ -46,10 +54,12 @@ typedef struct fb1 {
 fb arr_bangles[3];
 fb bpressure;
 
-#define CHECK_DEV       16
-#define INIT_DEV        9
+#define CHECK_DEV       	16
+#define INIT_DEV        	9
 
-#define CHECK_STATE     42
+#define CHECK_STATE     	42
+#define PARACHUTE_TRIGGER	41
+#define TIMER_TRIGGER		40
 
 typedef struct minipkt {
 	int size; // bytes of parameters
@@ -66,27 +76,28 @@ char NOMBRE[10]  = "brocket";
 char BPS = '0';
 char PASS[10]    = "0000";
 
-/*
-void bytes_pressuredata(float pressure_data, fb *out) {
-	long int data = (long int)(pressure_data);
-	out->arrbyte[0] = (char)(data & 0x000000FF);
-	out->arrbyte[1] = (char)((data >> 8 ) & 0x000000FF);
-	out->arrbyte[2] = (char)((data >> 16 ) & 0x000000FF);
-}*/
+bool checktimer(long ms) {
+	if ((millis() - lastmillisec) >= ms) {
+		lastmillisec = millis();
+		return 1;
+	}
+	return 0;
+}
 
-/*
+void parachutetrigger() {
+	myservo.attach(9);
+	myservo.write(15);
+}
+
+float getaltitude() {
+	return 44330. * (1.0 - pow(float(pressure) /101500.,0.1903));
+}
+
 void bytes_pressuredata(long pressure_data, fb *out) {
-	int data = (int)(pressure_data / 8);
-	int module = (int)(pressure_data % 8);
-	out->arrbyte[0] = (char)(data & 0x00FF);
-	out->arrbyte[1] = (char)((data >> 8 ) & 0x00FF);
-	out->arrbyte[2] = (char)(module & 0x00FF);
-}*/
-void bytes_pressuredata(long pressure_data, fb *out) {
-	out->arrbyte[0] = (int)(pressure_data & 0x00FF);
-	out->arrbyte[1] = (int)((pressure_data >> 8) & 0x00FF);
-	out->arrbyte[2] = (int)((pressure_data >> 16) & 0x00FF);
-	out->arrbyte[3] = (int)((pressure_data >> 24) & 0x00FF);
+	out->arrbyte[0] = (uint8_t)(pressure_data & 0x00FF);
+	out->arrbyte[1] = (uint8_t)((pressure_data >> 8) & 0x00FF);
+	out->arrbyte[2] = (uint8_t)((pressure_data >> 16) & 0x00FF);
+	out->arrbyte[3] = (uint8_t)((pressure_data >> 24) & 0x00FF);
 }
 
 void bytes_floatdata(float ft, fb *out) {
@@ -147,7 +158,8 @@ void setup(){
 		Serial.println(compass.GetErrorText(error));
  
 	bmp085Calibration(); // init barometric pressure sensor
-
+	//temperature = bmp085GetTemperature(bmp085ReadUT());
+	
 	lepacket.ready = 0;
 	lepacket.intr = 0;
 	lepacket.size = 0;
@@ -161,7 +173,20 @@ void loop(){
 	 
 	//delay(300);
 
-	if ((enflag != 1) || !(lepacket.ready)) return;
+	if (checktimer(mstimer) && mstimer != 0)
+		parachutetrigger();
+
+	if ((enflag != 1) || !(lepacket.ready)){ 
+		temperature = bmp085GetTemperature(bmp085ReadUT());
+		pressure = bmp085GetPressure(bmp085ReadUP());
+		float current_altitude = getaltitude();
+		if (current_altitude > maxaltitude)
+			maxaltitude = current_altitude;
+		if (maxaltitude - current_altitude > 3.2){
+			parachutetrigger();
+		}
+		return;
+	}
 
 	packet tmppacket = lepacket;
 	int aux1 = 0;
@@ -185,6 +210,14 @@ void loop(){
 		case CHECK_STATE:
 			if (tmppacket.param[0] == CHECK_STATE)
 				sendState();
+		case PARACHUTE_TRIGGER:
+			if (tmppacket.param[0] == PARACHUTE_TRIGGER)
+				parachutetrigger();
+			break;
+		case TIMER_TRIGGER:
+			if (tmppacket.param[0] != 0)
+				mstimer = (int)tmppacket.param[0] * 1000;
+				lastmillisec = millis();
 			break;
 	}
 }
@@ -242,15 +275,17 @@ void PrintData(){
 	 
 	temperature = bmp085GetTemperature(bmp085ReadUT());
 	pressure = bmp085GetPressure(bmp085ReadUP());
- 
+ 	float current_altitude = getaltitude();
+
 	getHeading();
 
-	bytes_pressuredata(pressure, &bpressure);
+	/*bytes_pressuredata(pressure, &bpressure);
 	Serial.print("Pressure arr values: ");
 	for (int i = 0; i < 4; i++) {
 		Serial.print((uint8_t)bpressure.arrbyte[i], DEC);
 		Serial.print("  ");
-	}
+	}*/
+
 	Serial.println("  ");
 	Serial.print("Eular Angle: ");
 	Serial.print(angles[0]);
@@ -261,6 +296,12 @@ void PrintData(){
 	Serial.print("  ");
 	Serial.print("Heading: ");
 	Serial.print(heading);
+	Serial.print("  ");
+	Serial.print("Altitude: ");
+	Serial.print(current_altitude);
+	Serial.print("  ");
+	Serial.print("Max Altitude: ");
+	Serial.print(maxaltitude);
 	Serial.print("  ");
 	Serial.print("Pressure: ");
 	Serial.print(pressure, DEC);
