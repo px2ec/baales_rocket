@@ -1,2 +1,3 @@
 *.pyc
 arduino/baales_rocket/nackup
+test*
