@@ -71,11 +71,10 @@ class ModCom:
 		if sys.platform == "linux2":
 			ltmp.append(('/dev/rfcomm0', 'rfcomm0', 'Bluetooth'))
 		#--------
-		#print blacklist
 		for e in ltmp:
 			if not e[0] in ModCom.__lps and not e[0] in blacklist:
-				#print e[0]
-				self._ser = serial.Serial(e[0], 115200, timeout = 1, rtscts=1)
+				# print e[0]
+				self._ser = serial.Serial(e[0], 9600, timeout = 1, rtscts=1)
 				if not self._ser.isOpen():
 					self._ser.open()
 				if self._checkdev():
@@ -100,7 +99,6 @@ class ModCom:
 		if not readdata:
 			return buffin
 		buff0 = self._ser.read() # first character (or byte) from input buffer
-		#print buff0
 		if not buff0: # if empy input
 			return buffin
 		if ord(buff0) == 0xFF:
@@ -125,19 +123,16 @@ class ModCom:
 		self._initdev()
 		linit = [0xFF, CHECK_DEV, 1, CHECK_DEV]
 		lread = self.Comunicate(linit, True)
-		#print lread
 		if not lread == []:
 			if lread[1] != CHECK_DEV:
 				return False
 			for c in lread[3:len(lread)]:
 				self._md += chr(c)
-			#print lread
 			return True
-		#print "Nada"
 		return False
 
 	def _initdev(self):
 		linit = [0xFF, INIT_DEV, 1, INIT_DEV]
 		self.Comunicate(linit)
 		if sys.platform.startswith('linux'):
-			sleep(3)
+			sleep(2)
