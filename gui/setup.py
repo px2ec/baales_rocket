@@ -5,7 +5,7 @@ from cx_Freeze import *
 shortcut_table = [
 	("DesktopShortcut",       # Shortcut
 	"DesktopFolder",          # Directory_
-	"GiveMeFive",                 # Name
+	"Baales Rocket",                 # Name
 	"TARGETDIR",              # Component_
 	"[TARGETDIR]main.exe", # Target
 	None,                     # Arguments
@@ -28,9 +28,9 @@ base = None
 if sys.platform == "win32":
 	base = "Win32GUI"
 
-build_exe_options = {"packages": ["os", "pyautogui"], "excludes": ["tkinter"], 'includes': ['atexit', 'mainwindow', 'ui_mainwindow'], 'path': sys.path + ['gmouseui', 'gmouseui/uimodules', 'daemon']}
+build_exe_options = {"packages": ["os"], "excludes": ["tkinter"], 'includes': ['atexit', 'mainwindow', 'ui_mainwindow'], 'path': sys.path + ['brocketui', 'brocketui/uimodules', 'daemon']}
 
-setup(name = "GiveMeFive",
+setup(name = "Baales Rocket",
 		version = "0.3",
 		description = "Cliente",
 		options = {"bdist_msi": bdist_msi_options, "build_exe": build_exe_options},
