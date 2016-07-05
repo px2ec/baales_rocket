@@ -19,7 +19,9 @@ class MainWindow(QtGui.QMainWindow, ui_mainwindow.Ui_MainWindow):
 		self._enabletglstate = False
 		self.pbEnable.clicked.connect(self.pbenableclicked)
 		self.pbEnableTimer.clicked.connect(self.pbenabletimerclicked)
-		self.pbEnableParachute.clicked.connect(self.pbenableparachute)
+		self.pbEnableParachute.clicked.connect(self.pbenableparachuteclicked)
+		self.pbReset.clicked.connect(self.pbresetclicked)
+		self.pbDiffTrigger.clicked.connect(self.pbdifftriggerclicked)
 
 	def pbconnectclicked(self):
 		if self._brdc.Available:
@@ -60,10 +62,30 @@ class MainWindow(QtGui.QMainWindow, ui_mainwindow.Ui_MainWindow):
 			self._brdc.start()
 		self.lblTimerSt.setText(ui_mainwindow._translate("MainWindow", "Timer activado", None))
 
-	def pbenableparachute(self):
+	def pbenableparachuteclicked(self):
 		if self._enabletglstate:
 			self._brdc.terminate()
 		self._brdc._brd.parachuteTrigger()
+		if self._enabletglstate:
+			self._brdc.start()
+
+	def pbresetclicked(self):
+		if self._enabletglstate:
+			self._enabletglstate = not self._enabletglstate
+			self.pbEnable.setText(ui_mainwindow._translate("MainWindow", "Habilitar", None))
+			self._brdc.terminate()
+			self.lblState.setText(ui_mainwindow._translate("MainWindow", "Oprima boton para activar", None))
+		self._brdc._brd.resetDevice()
+		self._brdc._brd.fst_refresh = False
+
+	def pbdifftriggerclicked(self):
+		text, boolean = QtGui.QInputDialog.getText(self, 'Set Diff Altitude', 'Distance 1 - 10 [m]')
+		if not boolean:
+			return None
+		tstr = (''.join([str(x) for x in text])).split('.')
+		if self._enabletglstate:
+			self._brdc.terminate()
+		self._brdc._brd.diffTrigger(int(tstr[0]), int(tstr[1]))
 		if self._enabletglstate:
 			self._brdc.start()
 
