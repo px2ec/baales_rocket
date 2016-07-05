@@ -52,7 +52,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>70</y>
+      <y>60</y>
       <width>94</width>
       <height>29</height>
      </rect>
@@ -94,7 +94,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>130</y>
+      <y>140</y>
       <width>94</width>
       <height>29</height>
      </rect>
@@ -107,9 +107,9 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>80</y>
+      <y>70</y>
       <width>101</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -123,7 +123,7 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>130</y>
+      <y>140</y>
       <width>94</width>
       <height>29</height>
      </rect>
@@ -213,6 +213,32 @@
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="pbReset">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>100</y>
+      <width>94</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reiniciar</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbDiffTrigger">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>100</y>
+      <width>94</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Diferencia Altura</string>
+    </property>
+   </widget>
    <zorder>frame</zorder>
    <zorder>pbConnect</zorder>
    <zorder>pbEnable</zorder>
@@ -225,6 +251,8 @@
    <zorder>lblPitch</zorder>
    <zorder>lblRoll</zorder>
    <zorder>lblPressure</zorder>
+   <zorder>pbReset</zorder>
+   <zorder>pbDiffTrigger</zorder>
   </widget>
  </widget>
  <resources/>
