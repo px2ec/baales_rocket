@@ -3,6 +3,7 @@
 #include <FIMU_ADXL345.h>
 #include <FIMU_ITG3200.h>
 #include <HMC5883L.h>
+#include <EEPROM.h>
 // Servo library
 #include <Servo.h> 
 #define SERVO_PIN		9
@@ -127,6 +128,10 @@ void sendState() {
 	char arr_bpressure[3];
 	bytes_pressuredata(pressure, arr_bpressure);*/
 
+	float current_altitude = getaltitude();
+	if (current_altitude > maxaltitude)
+			maxaltitude = current_altitude;
+
 	for (int i = 0; i < 3; i++)
 		bytes_floatdata(angles[i], &arr_bangles[i]);
 	bytes_pressuredata(pressure, &bpressure);
@@ -175,7 +180,10 @@ void loop(){
 	//PrintData();
 	 
 	//delay(300);
-
+	fb balt;
+	bytes_floatdata(maxaltitude, &balt);
+	for (int i= 0; i < 3; i++)
+		EEPROM.write(i, balt.arrbyte[i]);
 	if (checktimer(mstimer) && mstimer != 0)
 		parachutetrigger();
 
@@ -185,7 +193,7 @@ void loop(){
 		float current_altitude = getaltitude();
 		if (current_altitude > maxaltitude)
 			maxaltitude = current_altitude;
-		if (maxaltitude - current_altitude > diff_triger_val && diff_triger_val != 0){
+		if ((maxaltitude - current_altitude > diff_triger_val) && diff_triger_val){
 			parachutetrigger();
 		}
 		return;
@@ -214,7 +222,6 @@ void loop(){
 			if (tmppacket.param[0] == CHECK_STATE)
 				sendState();
 		case PARACHUTE_TRIGGER:
-			RESET_SW			3
 				parachutetrigger();
 			break;
 		case TIMER_TRIGGER:
@@ -229,6 +236,7 @@ void loop(){
 		case DIFF_TRIGER:
 			if (tmppacket.param[0] != 0 || tmppacket.param[1] != 0)
 			diff_triger_val = float(tmppacket.param[1]) + float(tmppacket.param[0])/10;
+			break;
 	}
 }
 
