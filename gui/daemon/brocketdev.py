@@ -5,6 +5,8 @@ import modcom
 PARACHUTE_TRIGGER = 41
 CHECK_STATE = 42
 TIMER_TRIGGER = 40
+RESET_SW = 3
+DIFF_TRIGER = 8
 
 class bRocketDev(moddev.ModDev):
 	
@@ -31,8 +33,16 @@ class bRocketDev(moddev.ModDev):
 		lst = [0xFF, PARACHUTE_TRIGGER, 1, PARACHUTE_TRIGGER]
 		lread = self._mc.Comunicate(lst, True)
 
+	def resetDevice(self):
+		lst = [0xFF, RESET_SW, 1, RESET_SW]
+		lread = self._mc.Comunicate(lst, True)
+
 	def timerTrigger(self, time):
 		lst = [0xFF, TIMER_TRIGGER, 1, (time & 0xFF)]
+		lread = self._mc.Comunicate(lst, True)
+
+	def diffTrigger(self, integer, decimal):
+		lst = [0xFF, DIFF_TRIGER, 2, (integer & 0xFF), (decimal & 0xFF)]
 		lread = self._mc.Comunicate(lst, True)
 
 	def getState(self):
