@@ -36,6 +36,7 @@ float maxaltitude = 0;
 
 long lastmillisec;
 long mstimer;
+float diff_triger_val = 0;
 
 float angles[3]; // yaw pitch roll
 float heading;
@@ -60,6 +61,8 @@ fb bpressure;
 #define CHECK_STATE     	42
 #define PARACHUTE_TRIGGER	41
 #define TIMER_TRIGGER		40
+#define RESET_SW			3
+#define DIFF_TRIGER			8
 
 typedef struct minipkt {
 	int size; // bytes of parameters
@@ -182,7 +185,7 @@ void loop(){
 		float current_altitude = getaltitude();
 		if (current_altitude > maxaltitude)
 			maxaltitude = current_altitude;
-		if (maxaltitude - current_altitude > 3.2){
+		if (maxaltitude - current_altitude > diff_triger_val && diff_triger_val != 0){
 			parachutetrigger();
 		}
 		return;
@@ -211,7 +214,7 @@ void loop(){
 			if (tmppacket.param[0] == CHECK_STATE)
 				sendState();
 		case PARACHUTE_TRIGGER:
-			if (tmppacket.param[0] == PARACHUTE_TRIGGER)
+			RESET_SW			3
 				parachutetrigger();
 			break;
 		case TIMER_TRIGGER:
@@ -219,6 +222,13 @@ void loop(){
 				mstimer = (int)tmppacket.param[0] * 1000;
 				lastmillisec = millis();
 			break;
+		case RESET_SW:
+			if (tmppacket.param[0] == RESET_SW)
+				software_Reset();
+			break;
+		case DIFF_TRIGER:
+			if (tmppacket.param[0] != 0 || tmppacket.param[1] != 0)
+			diff_triger_val = float(tmppacket.param[1]) + float(tmppacket.param[0])/10;
 	}
 }
 
