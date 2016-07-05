@@ -2,3 +2,5 @@
 arduino/baales_rocket/nackup
 test*
 *.csv
+build/
+dist/
