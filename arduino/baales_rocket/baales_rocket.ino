@@ -221,6 +221,7 @@ void loop(){
 		case CHECK_STATE:
 			if (tmppacket.param[0] == CHECK_STATE)
 				sendState();
+			break;
 		case PARACHUTE_TRIGGER:
 				parachutetrigger();
 			break;
