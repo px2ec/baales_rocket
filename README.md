@@ -8,12 +8,12 @@ Se sugiere usar windows o linux (no probado en MAC)
 Requiere las librerías de arduino, Pyqt4, Pyside, Python
 
 ## Arduino
--------
+
 Programado con Arduino y las librerías en la carpeta: ./arduino/libraries/
 Archivo con el programa: ./arduino/baales_rocket/
 
 ## Interfáz gráfica
-----------------
+
 Interfaz gráfica editada con IDLE, Sublime Text, QTcreator (Para elementos gréficos)
 
 ### Como ejecutar el programa
@@ -33,6 +33,7 @@ En la carpeta ./gui/
 Se abren los archivos .ui con QTcreator y despues de editar se ejecuta el refresh.bat o refresh.sh (windows o linux/mac respectivamente) que genera la clase ventana utilizable en python.
 
 ## Hardware
+
 1. Microcontrolador Arduino
 2. Sensor IMU 10 dof de dfRobot
 ..1. ADXL345 (acelerómetro)
@@ -42,3 +43,8 @@ Se abren los archivos .ui con QTcreator y despues de editar se ejecuta el refres
 4. Módulo bluetooth utilizado: Grove BLE v1.0
 ..* Este módulo tiene gran alcance y poco consumo
 
+## Comunicaión
+
+El protocolo utilizado es simple, se envía información por byte en un encapsulado simple de frames
+
+255 | 'Instrucción' | 'tamaño' | data
