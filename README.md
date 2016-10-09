@@ -47,4 +47,5 @@ Se abren los archivos .ui con QTcreator y despues de editar se ejecuta el refres
 
 El protocolo utilizado es simple, se envía información por byte en un encapsulado simple de frames
 
-255 | 'Instrucción' | 'tamaño' | data
+255 | 'Instrucción' | 'tamaño' | data1 | data2 | ...
+--- | --- | --- | --- | --- | ---
