@@ -23,6 +23,7 @@ O correr el programa con IDLE.
 
 ### Descripción de archivos
 En la carpeta ./gui/
+
 1. main.py : instancia la interfáz gráfica (clase de ventana)
 2. setup.py : crea un instalador para el programa resultante
 3. brocketui/mainwindows.py : es la clase principal con los métodos para utilización del programa
@@ -43,9 +44,9 @@ Se abren los archivos .ui con QTcreator y despues de editar se ejecuta el refres
 4. Módulo bluetooth utilizado: Grove BLE v1.0
 ..* Este módulo tiene gran alcance y poco consumo
 
-## Comunicaión
+## Comunicación
 
 El protocolo utilizado es simple, se envía información por byte en un encapsulado simple de frames
 
 255 | 'Instrucción' | 'tamaño' | data1 | data2 | ...
---- | --- | --- | --- | --- | ---
+--- | --- 			| ---	   | ---   | ---   | ---
