@@ -37,12 +37,12 @@ Se abren los archivos .ui con QTcreator y despues de editar se ejecuta el refres
 
 1. Microcontrolador Arduino
 2. Sensor IMU 10 dof de dfRobot
-..1. ADXL345 (acelerómetro)
-..2. ITG3200 (giroscópio)
-..4. HMC5883L (magnetómetro - compass)
+	1. ADXL345 (acelerómetro)
+	2. ITG3200 (giroscópio)
+	3. HMC5883L (magnetómetro - compass)
 3. BMP085 (barómetro - termometro)
 4. Módulo bluetooth utilizado: Grove BLE v1.0
-..* Este módulo tiene gran alcance y poco consumo
+	* Este módulo tiene gran alcance y poco consumo
 
 ## Comunicación
 
